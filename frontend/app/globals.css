@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+/* --- 1. TELL TAILWIND V4 TO USE MANUAL CLASS TOGGLING --- */
+@variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* --- 2. THEME DEFINITIONS --- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Applied when <html class="dark"> */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+/* --- 3. THE RAINBOW RING CORE STRUCTURAL RULES --- */
+.rainbow {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Outer Glowing/Rotating Layer (Light Mode Layout) */
+.rainbow::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  animation: rotate 5s linear infinite;
+  background: conic-gradient(
+    from 0deg,
+    #7c3aed,
+    #a78bfa,
+    #c4b5fd,
+    #a78bfa,
+    #7c3aed
+  );
+  opacity: 0.75;
+  filter: blur(18px);
+}
+
+/* Inner Masking Layer */
+.rainbow::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--background);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* Dark mode adjustments (Dark Mode Layout) */
+.dark .rainbow::before {
+  filter: blur(8px); 
+  opacity: 1;
+  background: conic-gradient(
+    from 0deg,
+    #34d399,
+    #10b981,
+    #6ee7b7,
+    #10b981,
+    #34d399
+  );
+}
