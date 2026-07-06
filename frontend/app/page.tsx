@@ -6,7 +6,7 @@ import ToolCard from "@/components/Landingpage/ToolCard";
 import BlogCard from "@/components/Landingpage/BlogCard";
 import AdSlot from "@/components/Landingpage/AdSlot";
 import Footer from "@/components/Landingpage/Footer";
-import Testimonials from "@/components/Landingpage/Testimonials";
+
 
 type Category = {
   label: string;
@@ -120,9 +120,9 @@ export default function HomePage() {
                 href={cat.path}
                 className="group flex flex-col items-center text-center gap-2 p-6 bg-white dark:bg-[#0d0e12] border border-slate-200 dark:border-white/5 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-violet-600/40 dark:hover:border-[#A6FF5D]/40 hover:shadow-xs"
               >
-                <div className="w-12 h-12 bg-slate-100 dark:bg-white/5 rounded-xl flex items-center justify-center text-2xl mb-2 transition-transform duration-300 group-hover:scale-110">
+                {/* <div className="w-12 h-12 bg-slate-100 dark:bg-white/5 rounded-xl flex items-center justify-center text-2xl mb-2 transition-transform duration-300 group-hover:scale-110">
                   {cat.icon}
-                </div>
+                </div> */}
                 <h3 className="text-sm font-semibold text-slate-800 dark:text-zinc-200 group-hover:text-violet-600 dark:group-hover:text-[#A6FF5D] transition-colors">
                   {cat.label}
                 </h3>

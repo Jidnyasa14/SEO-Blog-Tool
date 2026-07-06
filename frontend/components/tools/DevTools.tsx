@@ -25,7 +25,6 @@ function DevActionControl({ text, onAction, actionLabel }: { text: string; onAct
   );
 }
 
-// 1. ADVANCED JSON FORMATTER
 export function JsonFormatter() {
   const [input, setInput] = useState('{"engine": "NextJS 14+", "architecture": "AppRouter", "optimized": true}');
   const [output, setOutput] = useState('');
@@ -71,7 +70,7 @@ export function JsonFormatter() {
   );
 }
 
-// 2. ADVANCED BASE64 ENCODER/DECODER
+
 export function Base64Tool() {
   const [txt, setTxt] = useState('');
   const [res, setRes] = useState('');
@@ -272,7 +271,7 @@ export function RegexTester() {
 //     </div>
 //   );
 // }
-//===========================================================
+//================================================================================================================================
 export default function DevToolsWorkspace() {
   return (
     <div className="min-h-screen bg-white text-neutral-950 dark:bg-black dark:text-neutral-100 transition-colors duration-200">
