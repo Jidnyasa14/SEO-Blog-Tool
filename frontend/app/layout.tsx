@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
+import { Poppins } from "next/font/google"; 
 import "./globals.css";
 
-// Clean, syntax-error-free Metadata object
+// Configure Poppins with explicit weights needed for a SaaS app
+const poppins = Poppins({
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Toolverse",
   description: "Online Web Tools",
@@ -15,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className={`${poppins.variable} antialiased font-sans`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -27,32 +35,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-// import type { Metadata } from "next";
-// import { ThemeProvider } from "next-themes";
-// import "./globals.css";
-
-// export const metadata: Metadata = {
-//   title: "Toolverse",
-//   description: "Online Web Tools",
-// };
-
-// export default function RootLayout({
-//   children,
-// }: {
-//   children: React.ReactNode;
-// }) {
-//   return (
-//     <html lang="en" suppressHydrationWarning>
-//       <body>
-//         <ThemeProvider
-//           attribute="class"
-//           defaultTheme="light"
-//           enableSystem={false}
-//         >
-//           {children}
-//         </ThemeProvider>
-//       </body>
-//     </html>
-//   );
-// }

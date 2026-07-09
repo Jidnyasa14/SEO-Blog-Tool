@@ -167,7 +167,7 @@ export default function BlogListingPage() {
         
         {/* Left-Aligned Clean Typography Header */}
         <div className="mb-10 space-y-2">
-          <h1 className="font-sans text-3xl font-bold tracking-tight text-violet-600 dark:text-[#A6FF5D] sm:text-4xl">
+          <h1 className="font-sans text-4xl font-medium tracking-tight text-violet-600 dark:text-[#A6FF5D] sm:text-5xl">
             Knowledge Base and Insights
           </h1>
           <p className="max-w-2xl text-base text-slate-500 dark:text-neutral-400">
@@ -194,7 +194,7 @@ export default function BlogListingPage() {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`rounded-full px-5 py-1.5 text-xs font-semibold transition-all ${
+                  className={`rounded-full px-7 py-3 text-xs font-semibold transition-all cursor-pointer ${
                     isActive
                       ? 'bg-violet-600 text-white shadow-sm dark:bg-[#A6FF5D] dark:text-black'
                       : 'border border-slate-200 bg-white text-slate-600 hover:border-violet-500 hover:text-violet-700 dark:border-neutral-800 dark:bg-neutral-900/40 dark:text-neutral-300 dark:hover:border-[#A6FF5D] dark:hover:text-[#A6FF5D]'

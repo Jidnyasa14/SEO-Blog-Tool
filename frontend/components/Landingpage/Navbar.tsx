@@ -36,8 +36,11 @@ export default function Navbar() {
   const { resolvedTheme, setTheme } = useTheme();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  
+  const [mounted, setMounted] = useState(false);
 
-
+  // Initialize AuthState cleanly
   const [authState, setAuthState] = useState<AuthState>({
     isLoggedIn: false,
     name: "Guest",
@@ -45,28 +48,26 @@ export default function Navbar() {
     avatarUrl: "",
   });
 
+  // Safe side effect to sync client state AFTER HTML hydration finishes
   useEffect(() => {
+    setMounted(true);
 
-    const syncSessionStore = () => {
-      const storedUser = localStorage.getItem("active_user");
-      if (storedUser) {
-        try {
-          const parsed: ActiveUser = JSON.parse(storedUser);
-          if (parsed?.email) {
-            setAuthState({
-              isLoggedIn: true,
-              name: parsed.email.split("@")[0],
-              email: parsed.email,
-              avatarUrl: "",
-            });
-          }
-        } catch (err) {
-          console.error("LocalStorage parse error:", err);
+    const storedUser = localStorage.getItem("active_user");
+    if (storedUser) {
+      try {
+        const parsed: ActiveUser = JSON.parse(storedUser);
+        if (parsed?.email) {
+          setAuthState({
+            isLoggedIn: true,
+            name: parsed.email.split("@")[0],
+            email: parsed.email,
+            avatarUrl: "",
+          });
         }
+      } catch (err) {
+        console.error("LocalStorage parse error:", err);
       }
-    };
-
-    syncSessionStore();
+    }
   }, []);
 
   const isDark = resolvedTheme === "dark";
@@ -128,16 +129,22 @@ export default function Navbar() {
         {/* Right Section */}
         <div className="flex items-center gap-3">
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-full border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white"
+            className="p-2 rounded-full border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white flex items-center justify-center w-8 h-8 cursor-pointer"
           >
-            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            {/* ✅ CRITICAL FIX: Only render the Sun or Moon icon AFTER mounting on the client.
+                This ensures the server renders an empty placeholder container, avoiding the icon mismatch completely. */}
+            {mounted ? (
+              isDark ? <Sun size={16} /> : <Moon size={16} />
+            ) : (
+              <div className="w-4 h-4" />
+            )}
           </button>
 
           {/* Auth Display Node */}
-          {authState.isLoggedIn ? (
+          {mounted && authState.isLoggedIn ? (
             <div className="relative group">
               <div className="h-9 w-9 rounded-full bg-violet-100 dark:bg-zinc-800 text-violet-600 dark:text-[#A6FF5D] flex items-center justify-center font-bold uppercase select-none shadow-xs">
                 {authState.name.charAt(0)}
@@ -158,7 +165,7 @@ export default function Navbar() {
 
                   <button
                     onClick={handleSignOut}
-                    className="text-red-500 font-semibold mt-2 block w-full text-left"
+                    className="text-red-500 font-semibold mt-2 block w-full text-left cursor-pointer"
                   >
                     Sign Out
                   </button>
@@ -168,7 +175,7 @@ export default function Navbar() {
           ) : (
             <Link
               href="/login"
-              className="hidden md:inline-flex px-4 py-2 rounded-full bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 active:scale-95 transition"
+              className="hidden md:inline-flex px-4 py-2 rounded-full bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 active:scale-[0.97] transition"
             >
               Get Started
             </Link>
@@ -202,6 +209,211 @@ export default function Navbar() {
     </header>
   );
 }
+
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import Link from "next/link";
+// import { usePathname, useRouter } from "next/navigation";
+// import { useTheme } from "next-themes";
+// import { Sun, Moon } from "lucide-react";
+
+// type NavLink = {
+//   label: string;
+//   path: string;
+// };
+
+// const NAV_LINKS: NavLink[] = [
+//   { label: "Home", path: "/" },
+//   { label: "Tools", path: "/tools" },
+//   { label: "Blog", path: "/blog" },
+//   { label: "Categories", path: "/categories/all" },
+//   { label: "About", path: "/about" },
+// ];
+
+// interface ActiveUser {
+//   email: string;
+// }
+
+// interface AuthState {
+//   isLoggedIn: boolean;
+//   name: string;
+//   email: string;
+//   avatarUrl: string;
+// }
+
+// export default function Navbar() {
+//   const router = useRouter();
+//   const pathname = usePathname();
+//   const { resolvedTheme, setTheme } = useTheme();
+
+//   const [menuOpen, setMenuOpen] = useState(false);
+
+
+//   const [authState, setAuthState] = useState<AuthState>({
+//     isLoggedIn: false,
+//     name: "Guest",
+//     email: "",
+//     avatarUrl: "",
+//   });
+
+//   useEffect(() => {
+
+//     const syncSessionStore = () => {
+//       const storedUser = localStorage.getItem("active_user");
+//       if (storedUser) {
+//         try {
+//           const parsed: ActiveUser = JSON.parse(storedUser);
+//           if (parsed?.email) {
+//             setAuthState({
+//               isLoggedIn: true,
+//               name: parsed.email.split("@")[0],
+//               email: parsed.email,
+//               avatarUrl: "",
+//             });
+//           }
+//         } catch (err) {
+//           console.error("LocalStorage parse error:", err);
+//         }
+//       }
+//     };
+
+//     syncSessionStore();
+//   }, []);
+
+//   const isDark = resolvedTheme === "dark";
+
+//   const toggleTheme = () => {
+//     setTheme(isDark ? "light" : "dark");
+//   };
+
+//   const handleSignOut = () => {
+//     localStorage.removeItem("active_user");
+//     setAuthState({
+//       isLoggedIn: false,
+//       name: "Guest",
+//       email: "",
+//       avatarUrl: "",
+//     });
+//     setMenuOpen(false);
+//     router.push("/login");
+//   };
+
+//   return (
+//     <header className="sticky top-0 z-50 bg-[#E8E8FF]/80 dark:bg-black/80 backdrop-blur-md border-b border-violet-200/40 dark:border-white/10 w-full transition-colors duration-200">
+//       <nav className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+
+//         {/* Logo */}
+//         <Link
+//           href="/"
+//           className="flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-white"
+//         >
+//           <span>
+//             Tool
+//             <span className="text-violet-600 dark:text-[#A6FF5D]">
+//               verse
+//             </span>
+//           </span>
+//         </Link>
+
+//         {/* Desktop Links */}
+//         <ul className="hidden md:flex items-center gap-1">
+//           {NAV_LINKS.map(({ label, path }) => {
+//             const isActive = pathname === path;
+//             return (
+//               <li key={path}>
+//                 <Link
+//                   href={path}
+//                   className={`px-4 py-2 rounded-full text-sm transition ${
+//                     isActive
+//                       ? "text-violet-600 bg-violet-50 dark:bg-white/10"
+//                       : "text-slate-600 dark:text-white/70 hover:bg-slate-100 dark:hover:bg-white/5"
+//                   }`}
+//                 >
+//                   {label}
+//                 </Link>
+//               </li>
+//             );
+//           })}
+//         </ul>
+
+//         {/* Right Section */}
+//         <div className="flex items-center gap-3">
+
+//           {/* Theme Toggle */}
+//           <button
+//             onClick={toggleTheme}
+//             className="p-2 rounded-full border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white"
+//           >
+//             {isDark ? <Sun size={16} /> : <Moon size={16} />}
+//           </button>
+
+//           {/* Auth Display Node */}
+//           {authState.isLoggedIn ? (
+//             <div className="relative group">
+//               <div className="h-9 w-9 rounded-full bg-violet-100 dark:bg-zinc-800 text-violet-600 dark:text-[#A6FF5D] flex items-center justify-center font-bold uppercase select-none shadow-xs">
+//                 {authState.name.charAt(0)}
+//               </div>
+
+//               <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition w-48 origin-top-right">
+//                 <div className="bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-xl p-3 shadow-xl text-sm">
+//                   <div className="mb-2 pb-2 border-b border-slate-100 dark:border-zinc-800">
+//                     <p className="font-bold text-slate-900 dark:text-white truncate capitalize">{authState.name}</p>
+//                     <p className="text-xs text-gray-400 truncate">
+//                       {authState.email}
+//                     </p>
+//                   </div>
+
+//                   <Link href="/profile" className="block py-1 text-slate-700 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-[#A6FF5D]">
+//                     Profile
+//                   </Link>
+
+//                   <button
+//                     onClick={handleSignOut}
+//                     className="text-red-500 font-semibold mt-2 block w-full text-left"
+//                   >
+//                     Sign Out
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+//           ) : (
+//             <Link
+//               href="/login"
+//               className="hidden md:inline-flex px-4 py-2 rounded-full bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 active:scale-95 transition"
+//             >
+//               Get Started
+//             </Link>
+//           )}
+
+//           {/* Mobile Toggle */}
+//           <button
+//             onClick={() => setMenuOpen(!menuOpen)}
+//             className="md:hidden p-2 text-slate-700 dark:text-white text-lg font-bold"
+//           >
+//             ☰
+//           </button>
+//         </div>
+//       </nav>
+
+//       {/* Mobile Menu */}
+//       {menuOpen && (
+//         <div className="md:hidden p-4 bg-white dark:bg-black border-t border-slate-200 dark:border-white/10 flex flex-col gap-1">
+//           {NAV_LINKS.map(({ label, path }) => (
+//             <Link
+//               key={path}
+//               href={path}
+//               onClick={() => setMenuOpen(false)}
+//               className="block py-2 text-sm text-slate-600 dark:text-white/70 hover:text-slate-900"
+//             >
+//               {label}
+//             </Link>
+//           ))}
+//         </div>
+//       )}
+//     </header>
+//   );
+// }
 
 
 
