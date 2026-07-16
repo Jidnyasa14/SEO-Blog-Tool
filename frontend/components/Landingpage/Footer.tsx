@@ -116,7 +116,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Company */}
+        {/* Company Links with operational redirect mapping */}
         <div>
           <h4 className="text-xs font-semibold text-slate-800 dark:text-zinc-200 uppercase tracking-wider mb-4">
             Company

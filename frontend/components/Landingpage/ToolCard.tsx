@@ -1,4 +1,3 @@
-
 "use client";
 
 import { ReactNode } from "react";
@@ -58,9 +57,9 @@ export default function ToolCard({ tool }: ToolCardProps) {
       <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-violet-600 to-violet-400 dark:from-[#A6FF5D] dark:to-[#A6FF5D]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div>
-        {/* <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-4 transition-transform duration-300 group-hover:scale-105 ${color.bg} ${color.text}`}>
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-4 transition-transform duration-300 group-hover:scale-105 ${color.bg} ${color.text}`}>
           {icon}
-        </div> */}
+        </div>
 
         <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 mb-2 leading-snug group-hover:text-violet-600 dark:group-hover:text-[#A6FF5D] transition-colors duration-200">
           {name}

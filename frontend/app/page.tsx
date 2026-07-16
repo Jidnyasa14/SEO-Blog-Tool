@@ -88,6 +88,12 @@ const BLOG_ARTICLES: Blog[] = [
   },
 ];
 
+const WHY_TOOLVERSE = [
+  { icon: "⚡", title: "Instant results", desc: "No sign-up, no waiting — every tool runs right in your browser." },
+  { icon: "🔒", title: "Privacy first", desc: "Your data never leaves your device. Everything runs client-side." },
+  { icon: "🎯", title: "Built for accuracy", desc: "Every tool is tested against edge cases so you can trust the output." },
+];
+
 export default function HomePage() {
   const featuredTools = ALL_TOOLS.slice(0, 8);
 
@@ -97,7 +103,7 @@ export default function HomePage() {
 
       {/* HERO SECTION */}
       <HeroSection />
-      
+
       {/* TESTIMONIALS MARQUEE */}
       {/* <Testimonials /> */}
 
@@ -105,6 +111,26 @@ export default function HomePage() {
       <div className="flex justify-center py-6 border-y border-slate-200 dark:border-white/5 bg-white/40 dark:bg-black/20 backdrop-blur-md">
         <AdSlot slot="leaderboard" />
       </div>
+
+      {/* WHY TOOLVERSE SECTION */}
+      {/* <section className="py-20 px-4 bg-white dark:bg-[#060709]">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-slate-900 dark:text-white tracking-tight">
+            Why people use Toolverse
+          </h2>
+          <div className="grid sm:grid-cols-3 gap-8">
+            {WHY_TOOLVERSE.map((item) => (
+              <div key={item.title} className="flex flex-col items-center text-center gap-3 p-6">
+                <div className="w-14 h-14 rounded-2xl bg-violet-100 dark:bg-white/5 flex items-center justify-center text-2xl">
+                  {item.icon}
+                </div>
+                <h3 className="font-semibold text-slate-900 dark:text-white">{item.title}</h3>
+                <p className="text-sm text-slate-600 dark:text-zinc-400">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section> */}
 
       {/* EXPLORE CATEGORIES SECTION */}
       <section className="py-24 px-4 bg-gradient-to-b from-transparent to-white dark:to-[#0a0b0d]">
@@ -120,9 +146,9 @@ export default function HomePage() {
                 href={cat.path}
                 className="group flex flex-col items-center text-center gap-2 p-6 bg-white dark:bg-[#0d0e12] border border-slate-200 dark:border-white/5 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-violet-600/40 dark:hover:border-[#A6FF5D]/40 hover:shadow-xs"
               >
-                {/* <div className="w-12 h-12 bg-slate-100 dark:bg-white/5 rounded-xl flex items-center justify-center text-2xl mb-2 transition-transform duration-300 group-hover:scale-110">
+                <div className="w-12 h-12 bg-slate-100 dark:bg-white/5 rounded-xl flex items-center justify-center text-2xl mb-2 transition-transform duration-300 group-hover:scale-110">
                   {cat.icon}
-                </div> */}
+                </div>
                 <h3 className="text-sm font-semibold text-slate-800 dark:text-zinc-200 group-hover:text-violet-600 dark:group-hover:text-[#A6FF5D] transition-colors">
                   {cat.label}
                 </h3>
@@ -182,4 +208,3 @@ export default function HomePage() {
     </main>
   );
 }
-

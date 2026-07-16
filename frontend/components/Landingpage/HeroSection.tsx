@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -81,6 +79,20 @@ export default function HeroSection() {
           >
             Explore Tools
           </button>
+        </div>
+
+        {/* Preview / Illustration Card */}
+        <div className="w-full max-w-[900px] mt-16 px-2">
+          <div className={`relative rounded-2xl overflow-hidden border shadow-xl
+            ${isDark ? 'border-white/10 bg-zinc-900/40' : 'border-white/80 bg-white/60'}`}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80"
+              alt="Toolverse dashboard preview"
+              className="w-full h-[240px] md:h-[380px] object-cover"
+            />
+            <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-t from-black/60 via-transparent to-transparent' : 'bg-gradient-to-t from-white/40 via-transparent to-transparent'}`} />
+          </div>
         </div>
 
         {/* Divider */}

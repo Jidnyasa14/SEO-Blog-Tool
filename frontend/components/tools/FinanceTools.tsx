@@ -480,45 +480,7 @@ export function LoanCalculator() {
   );
 }
 
-// ============================================================================
-// MAIN MASTER CONTAINER IMPLEMENTATION
-// ============================================================================
-// export default function FinanceTools() {
-//   return (
-//     <div className="min-h-screen bg-white text-neutral-950 dark:bg-black dark:text-neutral-100 transition-colors duration-200">
-//       {/* PRD Layout Configuration Requirement: 
-//         Top fixed semantic structural navigation anchor wrapper with absolute alignment space layers.
-//       */}
-//       <nav aria-label="Internal module platform directory navbar segment" className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-gray-200 dark:border-neutral-800 bg-white/90 dark:bg-black/95 backdrop-blur-md">
-//         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 sm:px-8">
-//           <div className="text-sm font-extrabold tracking-wide text-violet-600 dark:text-[#A6FF5D] uppercase">Toolverse Studio</div>
-//           <div className="text-[10px] font-mono font-bold text-gray-400 bg-neutral-100 dark:bg-neutral-900 px-2 py-1 rounded border dark:border-neutral-800">WORKSPACE CONTEXT MODE</div>
-//         </div>
-//       </nav>
 
-//       {/* Structural padding buffer zone matching your fixed navbar configuration height variables 
-//         preventing any layout elements overlapping down viewport grids. Content is perfectly left-aligned.
-//       */}
-//       <main className="mx-auto max-w-5xl px-6 pb-20 pt-24 sm:px-8 text-left">
-//         <div className="space-y-4 mb-8">
-//           <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-white">Finance Workspace</h1>
-//           <p className="text-sm text-gray-500 dark:text-neutral-400 max-w-2xl">
-//             Advanced analytical asset tracking matrix bundle with client side runtime math validation threads[cite: 19]. Fully compatible with dynamic internal layouts.
-//           </p>
-//         </div>
-
-//         <div className="flex flex-col gap-8">
-//           <EmiCalculator />
-//           <SipCalculator />
-//           <GstCalculator />
-//           <FdCalculator />
-//           <LoanCalculator />
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
-//============================================================
 export default function FinanceTools() {
   return (
     <div className="min-h-screen bg-white text-neutral-950 dark:bg-black dark:text-neutral-100 transition-colors duration-200">
