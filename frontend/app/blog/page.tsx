@@ -21,9 +21,9 @@ interface BlogArticle {
   };
 }
 
-// Updated dataset inventory matching your PRD launch specifications
+
 const MOCK_ARTICLES: BlogArticle[] = [
-  // ─── FINANCE ARTICLES (3) ───
+  
   {
     title: "Understanding Equated Monthly Installments and Debt Management",
     slug: "understanding-emi-debt-management",
@@ -93,7 +93,7 @@ const MOCK_ARTICLES: BlogArticle[] = [
     author: { name: "Toolverse", bio: "IT Services and Consulting company" }
   },
 
-  // ─── UTILITY ARTICLES (2) ───
+  
   {
     title: "Why Cryptographically Secure Password Strings Matter in Digital Platforms",
     slug: "secure-password-strings-importance",
@@ -206,7 +206,7 @@ export default function BlogListingPage() {
           </div>
         </div>
 
-        {/* Articles Grid Output */}
+        
         {filteredArticles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {filteredArticles.map((article) => (
@@ -246,7 +246,7 @@ export default function BlogListingPage() {
                     </p>
                   </div>
 
-                  {/* Footer Context Segment: Author Details & Tags Panel */}
+                  
                   <div className="mt-6 pt-4 border-t border-slate-100 dark:border-neutral-800/60 space-y-4">
                     {/* Author Attribution Meta Block */}
                     <div className="flex items-center gap-3">
@@ -261,7 +261,7 @@ export default function BlogListingPage() {
                       </div>
                     </div>
 
-                    {/* Tag Badges Row */}
+                    
                     <div className="flex flex-wrap gap-1.5">
                       {article.tags.map((tag) => (
                         <span key={tag} className="rounded-md bg-neutral-100 dark:bg-neutral-900 px-2 py-0.5 text-[10px] font-mono font-bold text-gray-500 dark:text-neutral-400 uppercase tracking-wider">

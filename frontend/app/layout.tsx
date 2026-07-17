@@ -3,7 +3,7 @@ import { ThemeProvider } from "next-themes";
 import { Poppins } from "next/font/google"; 
 import "./globals.css";
 
-// Configure Poppins with explicit weights needed for a SaaS app
+
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-poppins",

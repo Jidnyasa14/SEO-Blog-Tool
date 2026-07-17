@@ -4,9 +4,7 @@
 
 import React, { useState, useMemo } from 'react';
 
-// ============================================================================
-// TYPE DEFINITIONS & STRUCTURES
-// ============================================================================
+
 type EmiScheduleRow = {
   month: number;
   emi: number;
@@ -15,9 +13,6 @@ type EmiScheduleRow = {
   balance: number;
 };
 
-// ============================================================================
-// COMPACT MATH & UTILITY REFACTOR HELPERS
-// ============================================================================
 const clamp = (value: number, min: number, max: number) => 
   Math.min(max, Math.max(min, value));
 
@@ -97,9 +92,6 @@ const sipCalc = (m: number, r: number, y: number) => {
   return { totalInvested, maturityValue, estReturns, cagr };
 };
 
-// ============================================================================
-// SHAREABLE CORE SUB-COMPONENTS
-// ============================================================================
 function ActionControls({ copyText, onExport }: { copyText: string; onExport: () => void }) {
   const [copied, setCopied] = useState(false);
 
@@ -129,9 +121,6 @@ function ActionControls({ copyText, onExport }: { copyText: string; onExport: ()
   );
 }
 
-// ============================================================================
-// 1. EMI CALCULATOR COMPONENT
-// ============================================================================
 export function EmiCalculator() {
   const [p, setP] = useState(500000);
   const [r, setR] = useState(8.5);
@@ -240,9 +229,6 @@ export function EmiCalculator() {
   );
 }
 
-// ============================================================================
-// 2. SIP CALCULATOR COMPONENT
-// ============================================================================
 export function SipCalculator() {
   const [m, setM] = useState(10000);
   const [r, setR] = useState(12);
@@ -317,9 +303,7 @@ export function SipCalculator() {
   );
 }
 
-// ============================================================================
-// 3. GST CALCULATOR COMPONENT
-// ============================================================================
+
 export function GstCalculator() {
   const [amount, setAmount] = useState(5000);
   const [rate, setRate] = useState(18);
@@ -370,9 +354,7 @@ export function GstCalculator() {
   );
 }
 
-// ============================================================================
-// 4. FD CALCULATOR COMPONENT
-// ============================================================================
+
 export function FdCalculator() {
   const [p, setP] = useState(100000);
   const [r, setR] = useState(7.1);
@@ -425,9 +407,7 @@ export function FdCalculator() {
   );
 }
 
-// ============================================================================
-// 5. LOAN CALCULATOR COMPONENT
-// ============================================================================
+
 export function LoanCalculator() {
   const [p, setP] = useState(1000000);
   const [r, setR] = useState(9.5);

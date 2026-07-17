@@ -157,14 +157,14 @@ export default function HomePage() {
     <main className="flex flex-col min-h-screen bg-[#F8F6FF] dark:bg-black text-slate-900 dark:text-zinc-100 antialiased selection:bg-violet-500/30 dark:selection:bg-[#A6FF5D]/30 transition-colors duration-200">
       <Navbar />
 
-      {/* HERO SECTION */}
+      
       <HeroSection />
 
       <div className="flex justify-center py-6 border-y border-slate-200 dark:border-white/5 bg-white/40 dark:bg-black/20 backdrop-blur-md">
         <AdSlot slot="leaderboard" />
       </div>
 
-      {/* EXPLORE CATEGORIES SECTION */}
+      {/* Explre */}
       <section className="py-24 px-4 bg-gradient-to-b from-transparent to-white dark:to-[#0a0b0d]">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-10 text-slate-900 dark:text-white tracking-tight">
@@ -197,7 +197,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* TOOLS SECTION */}
+      {/* tools */}
       <section className="py-24 px-4 bg-white dark:bg-[#060709] border-t border-slate-200 dark:border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-10">
@@ -218,7 +218,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* BLOG SECTION */}
+      
       <section className="py-24 px-4 bg-gradient-to-b from-white to-slate-50 dark:from-[#060709] dark:to-[#0a0b0d] border-t border-slate-200 dark:border-white/5">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-10">

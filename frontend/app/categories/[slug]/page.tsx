@@ -24,7 +24,7 @@ interface CategoryData {
   blogs: BlogItem[];
 }
 
-// Complete PRD Compliant Registry with realistic launch contents
+
 const CATEGORY_REGISTRY: Record<string, CategoryData> = {
   finance: {
     name: 'Finance Tools',
@@ -154,7 +154,7 @@ export default async function CategoryPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Clean Stacked Sequential Viewport */}
+        
         <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8 space-y-16">
           
           {/* SECTION 1: AVAILABLE INTERACTIVE TOOLS */}
@@ -198,7 +198,7 @@ export default async function CategoryPage({ params }: PageProps) {
             </div>
           </section>
 
-          {/* SECTION 2: INFORMATIONAL GUIDES */}
+          
           <section className="space-y-6">
             <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/10 pb-3">
               <FaBookOpen className="text-emerald-500 text-sm" />
@@ -240,51 +240,3 @@ export default async function CategoryPage({ params }: PageProps) {
     </div>
   );
 }
-// import { notFound } from 'next/navigation';
-// import Navbar from '@/components/Landingpage/Navbar';
-// import Footer from '@/components/Landingpage/Footer';
-// import { ALL_CATEGORIES } from '../page';
-
-// interface CategoryPageProps {
-//   params: Promise<{ slug: string }>;
-// }
-
-// export default async function CategoryDetailPage({ params }: CategoryPageProps) {
-//   const { slug } = await params;
-
-//   const category = ALL_CATEGORIES.find((c) => c.slug === slug);
-
-//   if (!category) {
-//     notFound();
-//   }
-
-//   return (
-//     <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#000000]">
-//       <Navbar />
-
-//       <main className="w-full flex-grow px-4 py-12 sm:px-6 lg:px-8">
-//         <div className="mx-auto w-full max-w-7xl">
-
-//           <div className="mb-12 text-left">
-//             <p className="mb-2 text-xs font-bold uppercase tracking-widest text-violet-600 dark:text-[#A6FF5D]">
-//               Category
-//             </p>
-//             <h1 className="font-['Sora'] text-3xl font-extrabold tracking-tight text-slate-900 dark:text-[#A6FF5D] sm:text-4xl">
-//               {category.title}
-//             </h1>
-//             <p className="mt-2 max-w-2xl text-base text-slate-500 dark:text-slate-400">
-//               {category.desc}
-//             </p>
-//           </div>
-
-//           <div className="rounded-2xl border border-dashed border-slate-300 dark:border-white/10 p-10 text-center text-slate-500 dark:text-slate-400">
-//             Tools and blog posts for &quot;{category.title}&quot; go here.
-//           </div>
-
-//         </div>
-//       </main>
-
-//       <Footer />
-//     </div>
-//   );
-// }

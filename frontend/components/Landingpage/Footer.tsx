@@ -41,7 +41,7 @@ export default function Footer() {
     >
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         
-        {/* Logo + About */}
+        
         <div className="lg:col-span-1">
           <Link
             href="/"
@@ -78,7 +78,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Popular Tools */}
+        
         <div>
           <h4 className="text-xs font-semibold text-slate-800 dark:text-zinc-200 uppercase tracking-wider mb-4">
             Popular Tools
@@ -97,7 +97,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Categories */}
+        
         <div>
           <h4 className="text-xs font-semibold text-slate-800 dark:text-zinc-200 uppercase tracking-wider mb-4">
             Categories
@@ -116,7 +116,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Company Links with operational redirect mapping */}
+        
         <div>
           <h4 className="text-xs font-semibold text-slate-800 dark:text-zinc-200 uppercase tracking-wider mb-4">
             Company
@@ -136,7 +136,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
+      
       <div className="border-t border-slate-200/60 dark:border-white/5 py-6 px-6 text-center bg-slate-50/50 dark:bg-zinc-950/40">
         <p className="text-xs text-slate-400 dark:text-zinc-600">
           Optimized for speed, accuracy, and absolute user privacy.

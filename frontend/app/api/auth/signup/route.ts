@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1. Check if the user already exists
+    
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return NextResponse.json(
@@ -25,11 +25,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Encrypt the password
+    
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // 3. Create the user record
+    
     const newAdmin = await User.create({
       name: name || '',
       email: email.toLowerCase(),

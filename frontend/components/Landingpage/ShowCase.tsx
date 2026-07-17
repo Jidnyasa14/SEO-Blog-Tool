@@ -11,7 +11,7 @@ export default function ShowcaseSection() {
     <section className="py-20 px-4 bg-gradient-to-b from-white to-[#F8F6FF] dark:from-black dark:to-[#060709] border-b border-slate-200 dark:border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
         
-        {/* Left Side: Content */}
+        
         <div className="flex-1 max-w-xl text-left">
           <span className="text-xs font-bold tracking-widest uppercase text-violet-600 dark:text-[#A6FF5D] bg-violet-50 dark:bg-white/5 px-3 py-1.5 rounded-lg border border-violet-200/40 dark:border-white/10">
             Powerful Browser Apps
@@ -35,7 +35,7 @@ export default function ShowcaseSection() {
           </div>
         </div>
 
-        {/* Right Side: The Interactive Visual Mockup */}
+        
         <div className="flex-1 w-full max-w-2xl">
           <div className={`rounded-2xl border p-3 backdrop-blur-md shadow-2xl transition-all duration-300 ${
             isDark ? 'bg-zinc-900/40 border-zinc-800/80 shadow-black/50' : 'bg-white/70 border-violet-200/60 shadow-violet-900/10'
@@ -43,7 +43,7 @@ export default function ShowcaseSection() {
             <div className={`rounded-xl border overflow-hidden flex flex-col h-[340px] md:h-[400px] ${
               isDark ? 'bg-black border-zinc-800' : 'bg-slate-50 border-slate-200'
             }`}>
-              {/* Window Header Bar */}
+              
               <div className={`flex items-center gap-2 px-4 py-3 border-b ${isDark ? 'bg-zinc-900/50 border-zinc-800' : 'bg-slate-100 border-slate-200'}`}>
                 <div className="flex gap-1.5">
                   <span className="w-3 h-3 rounded-full bg-red-400 block" />
@@ -55,9 +55,9 @@ export default function ShowcaseSection() {
                 </div>
               </div>
 
-              {/* Main Workspace Layout */}
+              
               <div className="flex flex-1 overflow-hidden">
-                {/* Simulated App Sidebar */}
+                
                 <div className={`w-36 md:w-44 border-r p-3 hidden sm:flex flex-col gap-1.5 ${isDark ? 'border-zinc-800 bg-zinc-900/20' : 'border-slate-200 bg-slate-100/50'}`}>
                   <div className={`h-6 rounded-md w-full ${isDark ? 'bg-zinc-800' : 'bg-slate-200/70'}`} />
                   <div className={`h-6 rounded-md w-4/5 ${isDark ? 'bg-zinc-800' : 'bg-slate-200/70'}`} />
@@ -65,7 +65,7 @@ export default function ShowcaseSection() {
                   <div className={`h-6 rounded-md w-3/4 ${isDark ? 'bg-zinc-800' : 'bg-slate-200/70'}`} />
                 </div>
 
-                {/* Simulated Tool Canvas Panel */}
+                
                 <div className="flex-1 p-6 flex flex-col gap-4">
                   <div className="flex items-center justify-between">
                     <div className={`h-4 rounded-md w-1/3 ${isDark ? 'bg-zinc-800' : 'bg-slate-200'}`} />

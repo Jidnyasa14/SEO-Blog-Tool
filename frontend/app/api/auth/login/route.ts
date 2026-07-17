@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Find user in MongoDB
+    
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       return NextResponse.json(
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Compare encrypted passwords
+    
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return NextResponse.json(
@@ -35,14 +35,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create JWT Token
+    
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET as string,
       { expiresIn: '1d' }
     );
 
-    // Create response and set HTTP-only Cookie
+    
     const response = NextResponse.json(
       { success: true, message: 'Authentication successful.' },
       { status: 200 }

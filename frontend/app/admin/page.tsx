@@ -34,7 +34,7 @@ export default function AdminDashboardHome() {
         </div>
       </div>
 
-      {/* Creation Routers Panel */}
+      
       <div className="p-6 bg-black border border-slate-800 rounded-2xl space-y-4">
         <h3 className="text-base font-bold text-white tracking-tight">System Creation Accelerators</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -26,7 +26,7 @@ const BlogSchema = new Schema({
     trim: true,
   }],
   image: {
-    type: String, // Compressed Cloudinary asset path URL
+    type: String, 
   },
   seoTitle: {
     type: String,

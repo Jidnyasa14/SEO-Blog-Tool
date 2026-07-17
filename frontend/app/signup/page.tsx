@@ -193,7 +193,7 @@ export default function SignupPage() {
           </div>
         </div>
 
-        {/* ── Right Form Panel ── */}
+        
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12">
           <div className="w-full max-w-md space-y-6">
             {/* Mobile logo */}
@@ -214,7 +214,7 @@ export default function SignupPage() {
               </p>
             </div>
 
-            {/* Response notifications */}
+            
             {error && (
               <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 p-3.5 rounded-xl text-sm font-medium">
                 {error}
@@ -226,7 +226,7 @@ export default function SignupPage() {
               </div>
             )}
 
-            {/* Social buttons */}
+            
             <div className="grid grid-cols-2 gap-3">
               {["Google", "GitHub"].map((provider) => (
                 <button
@@ -258,7 +258,7 @@ export default function SignupPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Name */}
+              
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Full name</label>
                 <div className={inputWrap("name")}>
@@ -275,7 +275,7 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              {/* Email */}
+              
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                 <div className={inputWrap("email")}>
@@ -292,7 +292,7 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              {/* Password */}
+              
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
                 <div className={inputWrap("password")}>
@@ -317,7 +317,7 @@ export default function SignupPage() {
                 <PasswordStrength password={password} />
               </div>
 
-              {/* Confirm Password */}
+              
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Confirm password</label>
                 <div className={confirmWrap}>
@@ -347,7 +347,7 @@ export default function SignupPage() {
                 )}
               </div>
 
-              {/* Terms */}
+              
               <div
                 className="flex items-start gap-3 cursor-pointer group"
                 onClick={() => setAgreed(!agreed)}
@@ -363,7 +363,7 @@ export default function SignupPage() {
                 </span>
               </div>
 
-              {/* Submit */}
+              
               <button
                 type="submit"
                 disabled={isLoading || !agreed || passwordsMismatch}

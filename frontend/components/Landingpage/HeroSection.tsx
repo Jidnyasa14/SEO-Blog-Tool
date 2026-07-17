@@ -32,7 +32,7 @@ export default function HeroSection() {
             : 'bg-gradient-to-b from-[#E8E8FF] via-[#EAE9FF] to-[#F3F1FF]'
           }`}
       >
-        {/* Trust Badge */}
+        
         <div className={`flex flex-wrap items-center justify-center gap-2 pl-2 pr-4 py-1.5 mt-20 md:mt-30 rounded-full backdrop-blur-md border
           ${isDark
             ? 'bg-white/10 border-white/10'
@@ -61,7 +61,7 @@ export default function HeroSection() {
           We have designed high-impact tools that can give better results. From sleek interfaces to full stack experiences, we bring your brand to life online.
         </p>
 
-        {/* CTA Buttons */}
+        
         <div className="flex gap-3 mt-10">
           <button className={`text-xs md:text-sm px-6 py-3 rounded-xl transition cursor-pointer font-medium shadow-md hover:scale-[1.02] active:scale-95 duration-200
             ${isDark
@@ -95,12 +95,12 @@ export default function HeroSection() {
           </div>
         </div> */}
 
-        {/* Divider */}
+        
         <div className={`w-full max-w-[800px] h-[1px] mt-16 bg-gradient-to-r from-transparent to-transparent opacity-40
           ${isDark ? 'via-[#A6FF5D]' : 'via-violet-300'}`}
         ></div>
 
-        {/* Stats Grid */}
+        
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-14 max-w-[930px] w-full mt-4">
           {[
             { value: '20+', label: 'Years Experience' },

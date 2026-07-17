@@ -76,7 +76,7 @@ export default function CategoriesHubPage() {
             </p>
           </div>
 
-          {/* Cards Layout Engine Grid Mapping Grid */}
+          
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {ALL_CATEGORIES.map((category) => (
               <Link

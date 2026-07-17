@@ -13,7 +13,7 @@ export async function POST() {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      expires: new Date(0), // Sets expiration immediately to the past to purge cookie data
+      expires: new Date(0),
       path: '/',
     });
 
