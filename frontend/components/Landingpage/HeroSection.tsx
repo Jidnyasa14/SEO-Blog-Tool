@@ -82,7 +82,7 @@ export default function HeroSection() {
         </div>
 
         {/* Preview / Illustration Card */}
-        <div className="w-full max-w-[900px] mt-16 px-2">
+        {/* <div className="w-full max-w-[900px] mt-16 px-2">
           <div className={`relative rounded-2xl overflow-hidden border shadow-xl
             ${isDark ? 'border-white/10 bg-zinc-900/40' : 'border-white/80 bg-white/60'}`}
           >
@@ -93,7 +93,7 @@ export default function HeroSection() {
             />
             <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-t from-black/60 via-transparent to-transparent' : 'bg-gradient-to-t from-white/40 via-transparent to-transparent'}`} />
           </div>
-        </div>
+        </div> */}
 
         {/* Divider */}
         <div className={`w-full max-w-[800px] h-[1px] mt-16 bg-gradient-to-r from-transparent to-transparent opacity-40

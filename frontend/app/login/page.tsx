@@ -36,13 +36,11 @@ export default function LoginPage() {
         ? "http://localhost:5000/api/auth/login" 
         : "http://localhost:5000/api/auth/register";
 
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch('/api/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, password }),
+});
 
       const data = await response.json() as AuthenticationResponse;
 

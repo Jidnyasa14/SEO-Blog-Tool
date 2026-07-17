@@ -4,23 +4,6 @@ import jwt from 'jsonwebtoken';
 import { connectToDatabase } from '@/config/db';
 import { User } from '@/models/User';
 
-
-
-
-export async function GET() {
-  try {
-    
-    await connectToDatabase();
-    return NextResponse.json({ 
-      status: "Connected", 
-      message: "Database pipeline is open and healthy!" 
-    });
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : "Connection error";
-    return NextResponse.json({ status: "Error", error: msg }, { status: 500 });
-  }
-}
-
 export async function POST(request: Request) {
   try {
     await connectToDatabase();
@@ -34,7 +17,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Look for the target administrator record
+    // Find user in MongoDB
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       return NextResponse.json(
@@ -43,7 +26,7 @@ export async function POST(request: Request) {
       );
     }
 
-    
+    // Compare encrypted passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return NextResponse.json(
@@ -52,16 +35,16 @@ export async function POST(request: Request) {
       );
     }
 
-    
+    // Create JWT Token
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET as string,
       { expiresIn: '1d' }
     );
 
-    
+    // Create response and set HTTP-only Cookie
     const response = NextResponse.json(
-      { success: true, message: 'Authentication verification sequence successful.' },
+      { success: true, message: 'Authentication successful.' },
       { status: 200 }
     );
 
@@ -69,14 +52,16 @@ export async function POST(request: Request) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 60 * 60 * 24, // Exact 24-hour expiration duration match
+      maxAge: 60 * 60 * 24,
       path: '/',
     });
 
     return response;
 
   } catch (error: unknown) {
-    console.error('Auth handler thread runtime error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown runtime exception';
+    console.error('Auth handler runtime error:', errorMessage);
+    
     return NextResponse.json(
       { message: 'Internal Server Error occurring during processing.' }, 
       { status: 500 }

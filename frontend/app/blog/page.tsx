@@ -117,7 +117,6 @@ const MOCK_ARTICLES: BlogArticle[] = [
     author: { name: "Toolverse", bio: "IT Services and Consulting company" }
   },
 
-  // ─── TEXT / LINGUISTIC ARTICLES (2) ───
   {
     title: "The Ultimate Markdown Guide for Clean Technical Documentation",
     slug: "markdown-guide-technical-documentation",
@@ -165,9 +164,9 @@ export default function BlogListingPage() {
 
       <main className="w-full flex-grow px-4 py-12 sm:px-6 lg:px-8 max-w-7xl mx-auto mt-4">
         
-        {/* Left-Aligned Clean Typography Header */}
+        
         <div className="mb-10 space-y-2">
-          <h1 className="font-sans text-4xl font-medium tracking-tight text-violet-600 dark:text-[#A6FF5D] sm:text-5xl">
+          <h1 className="font-['Sora'] text-3xl font-extrabold tracking-tight text-slate-900 dark:text-[#A6FF5D] sm:text-4xl">
             Knowledge Base and Insights
           </h1>
           <p className="max-w-2xl text-base text-slate-500 dark:text-neutral-400">
