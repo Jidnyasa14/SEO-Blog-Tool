@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Landingpage/Navbar';
 import Footer from '@/components/Landingpage/Footer';
@@ -21,9 +21,20 @@ interface BlogArticle {
   };
 }
 
+interface MongoBlogResponse {
+  _id: string;
+  title: string;
+  slug: string;
+  category: 'Finance' | 'Developer' | 'Utility' | 'Text';
+  seoDescription?: string;
+  content: string;
+  status: 'Published' | 'Draft';
+  tags?: string | string[];
+  imageUrl?: string;
+  createdAt?: string;
+}
 
 const MOCK_ARTICLES: BlogArticle[] = [
-  
   {
     title: "Understanding Equated Monthly Installments and Debt Management",
     slug: "understanding-emi-debt-management",
@@ -57,8 +68,6 @@ const MOCK_ARTICLES: BlogArticle[] = [
     imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80",
     author: { name: "Toolverse", bio: "IT Services and Consulting company" }
   },
-
-  // ─── DEVELOPER ARTICLES (3) ───
   {
     title: "The Developer Guide to JSON Web Tokens Architecture and Claims",
     slug: "developer-guide-jwt-architecture",
@@ -92,8 +101,6 @@ const MOCK_ARTICLES: BlogArticle[] = [
     imageUrl: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=600&auto=format&fit=crop&q=80",
     author: { name: "Toolverse", bio: "IT Services and Consulting company" }
   },
-
-  
   {
     title: "Why Cryptographically Secure Password Strings Matter in Digital Platforms",
     slug: "secure-password-strings-importance",
@@ -116,7 +123,6 @@ const MOCK_ARTICLES: BlogArticle[] = [
     imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=80",
     author: { name: "Toolverse", bio: "IT Services and Consulting company" }
   },
-
   {
     title: "The Ultimate Markdown Guide for Clean Technical Documentation",
     slug: "markdown-guide-technical-documentation",
@@ -146,9 +152,58 @@ const CATEGORIES = ['All', 'Finance', 'Utility', 'Developer', 'Text'] as const;
 export default function BlogListingPage() {
   const [activeCategory, setActiveCategory] = useState<typeof CATEGORIES[number]>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [dbArticles, setDbArticles] = useState<BlogArticle[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        const response = await fetch('/api/blogs');
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data)) {
+            const mappedData: BlogArticle[] = data
+              .filter((item: MongoBlogResponse) => item.status === 'Published')
+              .map((item: MongoBlogResponse) => ({
+                title: item.title,
+                slug: item.slug,
+                category: item.category,
+                summary: item.seoDescription || item.content?.slice(0, 160) || '',
+                readingTime: Math.max(3, Math.ceil((item.content?.split(/\s+/).length || 0) / 200)),
+                date: item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric'
+                }) : 'Recently Deployed',
+                tags: typeof item.tags === 'string' 
+                  ? item.tags.split(',').map((t: string) => t.trim()) 
+                  : Array.isArray(item.tags) 
+                    ? item.tags 
+                    : [],
+                imageUrl: item.imageUrl || "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80",
+                author: { name: "Toolverse", bio: "IT Services and Consulting company" }
+              }));
+            setDbArticles(mappedData);
+          }
+        }
+      } catch (error) {
+        console.error("Error connecting to live blog collection endpoints:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchBlogs();
+  }, []);
+
+  const unifiedArticles = useMemo(() => {
+    if (dbArticles.length > 0) {
+      return dbArticles;
+    }
+    return MOCK_ARTICLES;
+  }, [dbArticles]);
 
   const filteredArticles = useMemo(() => {
-    return MOCK_ARTICLES.filter((article) => {
+    return unifiedArticles.filter((article) => {
       const matchesCategory = activeCategory === 'All' || article.category === activeCategory;
       const matchesSearch = 
         article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -156,7 +211,7 @@ export default function BlogListingPage() {
         article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, searchQuery]);
+  }, [unifiedArticles, activeCategory, searchQuery]);
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-black text-left transition-colors duration-200">
@@ -164,9 +219,11 @@ export default function BlogListingPage() {
 
       <main className="w-full flex-grow px-4 py-12 sm:px-6 lg:px-8 max-w-7xl mx-auto mt-4">
         
-        
         <div className="mb-10 space-y-2">
-          <h1 className="font-['Sora'] text-3xl font-extrabold tracking-tight text-slate-900 dark:text-[#A6FF5D] sm:text-4xl">
+          <h1 
+            style={{ fontFamily: "'Sora', sans-serif" }} 
+            className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-[#A6FF5D] sm:text-4xl"
+          >
             Knowledge Base and Insights
           </h1>
           <p className="max-w-2xl text-base text-slate-500 dark:text-neutral-400">
@@ -174,7 +231,6 @@ export default function BlogListingPage() {
           </p>
         </div>
 
-        {/* Dynamic Search & Category Filter Section */}
         <div className="space-y-6 mb-10 border-b border-slate-200 dark:border-neutral-800 pb-6">
           <div className="max-w-md">
             <input
@@ -206,8 +262,12 @@ export default function BlogListingPage() {
           </div>
         </div>
 
-        
-        {filteredArticles.length > 0 ? (
+        {isLoading ? (
+          <div className="py-20 text-center text-xs text-slate-400">
+            <div className="w-6 h-6 rounded-full border-2 border-violet-600 border-t-transparent animate-spin mx-auto mb-2" />
+            Compiling active indexing streams...
+          </div>
+        ) : filteredArticles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {filteredArticles.map((article) => (
               <Link
@@ -215,7 +275,6 @@ export default function BlogListingPage() {
                 key={article.slug}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xs transition-all duration-200 hover:border-violet-500 dark:border-neutral-800 dark:bg-neutral-900/30 dark:hover:border-[#A6FF5D]"
               >
-                {/* Featured Image Block Element */}
                 <div className="relative aspect-video w-full overflow-hidden bg-slate-100 dark:bg-neutral-800">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
@@ -226,7 +285,6 @@ export default function BlogListingPage() {
                   />
                 </div>
 
-                {/* Content Core Container Section */}
                 <div className="flex flex-1 flex-col justify-between p-6">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 text-[11px] font-mono font-bold text-gray-400 dark:text-neutral-500">
@@ -246,9 +304,7 @@ export default function BlogListingPage() {
                     </p>
                   </div>
 
-                  
                   <div className="mt-6 pt-4 border-t border-slate-100 dark:border-neutral-800/60 space-y-4">
-                    {/* Author Attribution Meta Block */}
                     <div className="flex items-center gap-3">
                       <div className="flex h-7 w-7 items-center justify-center rounded-full bg-violet-100 dark:bg-neutral-800 text-xs font-bold text-violet-600 dark:text-[#A6FF5D] uppercase">
                         {article.author.name.charAt(0)}
@@ -261,7 +317,6 @@ export default function BlogListingPage() {
                       </div>
                     </div>
 
-                    
                     <div className="flex flex-wrap gap-1.5">
                       {article.tags.map((tag) => (
                         <span key={tag} className="rounded-md bg-neutral-100 dark:bg-neutral-900 px-2 py-0.5 text-[10px] font-mono font-bold text-gray-500 dark:text-neutral-400 uppercase tracking-wider">

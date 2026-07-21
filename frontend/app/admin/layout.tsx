@@ -1,57 +1,127 @@
-import Link from 'next/link';
-import { FaThLarge, FaBlog, FaWrench, FaSignOutAlt, FaHome } from 'react-icons/fa';
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Navbar from "./Navbar";
+import { usePathname, useRouter } from "next/navigation";
+import { 
+  LayoutDashboard, 
+  FileText, 
+  Wrench, 
+  ArrowLeft, 
+  ShieldAlert 
+} from "lucide-react";
+
+// ✅ IMPORT SORA FONT
+import { Sora } from "next/font/google";
+
+// ✅ LOAD FONT (but DON'T apply globally)
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex min-h-screen bg-slate-950 text-slate-100 font-sans">
-      
-      {/* Sidebar Panel */}
-      <aside className="w-64 bg-black border-r border-slate-800/60 p-6 flex flex-col justify-between hidden md:flex">
-        <div className="space-y-8">
-          <div className="border-b border-slate-800 pb-4">
-            <span className="text-lg font-extrabold bg-gradient-to-r from-violet-400 to-[#A6FF5D] bg-clip-text text-transparent tracking-tight">
-              Control Center v1.0
-            </span>
-          </div>
-          <nav className="space-y-1.5">
-            <Link href="/admin" className="flex items-center space-x-3 px-4 py-3 bg-slate-900 text-[#A6FF5D] rounded-xl text-sm font-medium transition">
-              <FaThLarge className="text-xs" /> <span>Metrics Home</span>
-            </Link>
-            <Link href="/admin/blogs" className="flex items-center space-x-3 px-4 py-3 hover:bg-slate-900/60 text-slate-400 hover:text-slate-100 rounded-xl text-sm font-medium transition">
-              <FaBlog className="text-xs" /> <span>Manage Blogs</span>
-            </Link>
-            <Link href="/admin/tools" className="flex items-center space-x-3 px-4 py-3 hover:bg-slate-900/60 text-slate-400 hover:text-slate-100 rounded-xl text-sm font-medium transition">
-              <FaWrench className="text-xs" /> <span>Manage Tools</span>
-            </Link>
-            <Link href="/" className="flex items-center space-x-3 px-4 py-3 hover:bg-slate-900/60 text-slate-400 hover:text-slate-100 rounded-xl text-sm font-medium transition border-t border-slate-900 pt-4 mt-2">
-              <FaHome className="text-xs" /> <span>View Main Site</span>
-            </Link>
-          </nav>
-        </div>
-        
-        <button className="flex items-center space-x-3 px-4 py-3 bg-rose-950/20 hover:bg-rose-900/40 text-rose-400 hover:text-rose-300 rounded-xl text-sm font-medium transition mt-auto border border-rose-900/30 cursor-pointer">
-          <FaSignOutAlt className="text-xs" /> <span>Terminate Session</span>
-        </button>
-      </aside>
+  const pathname = usePathname();
+  const router = useRouter();
+  
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
-      {/* Primary Display Frame */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-16 bg-black border-b border-slate-800/60 flex items-center justify-between px-8">
-          <div className="md:hidden">
-            <span className="text-sm font-bold text-white">Toolverse Admin</span>
-          </div>
-          <div className="flex items-center space-x-3 ml-auto">
-            <div className="w-2 h-2 rounded-full bg-[#A6FF5D] animate-pulse" />
-            <span className="text-xs font-mono text-slate-400">Master Session Secure</span>
-          </div>
-        </header>
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("admin_logged_in") === "true";
+    
+    setTimeout(() => {
+      setIsAuthorized(isLoggedIn);
+    }, 0);
+  }, []);
+
+  if (isAuthorized === null) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-neutral-950 flex items-center justify-center text-slate-400">
+        <div className="w-6 h-6 rounded-full border-2 border-violet-600 border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
+  if (isAuthorized === false) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-neutral-950 flex flex-col items-center justify-center p-6 text-center">
+        <div className="p-4 rounded-full bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 mb-4 shadow-sm">
+          <ShieldAlert size={32} />
+        </div>
+
+        {/* ✅ APPLY SORA ONLY HERE (example heading) */}
+        <h1 className={`${sora.className} text-xl font-light text-slate-900 dark:text-white mb-2`}>
+          Unauthorized Control Space
+        </h1>
+
+        <p className="text-xs text-slate-500 dark:text-neutral-400 max-w-sm mb-6">
+          This segment requires active administrator privileges. If you believe this is an execution error, verify your credentials.
+        </p>
+
+        <button
+          onClick={() => router.push("/login")}
+          className="px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold text-xs rounded-full transition shadow-sm cursor-pointer flex items-center gap-2"
+        >
+          <ArrowLeft size={14} /> Go to Login Portal
+        </button>
+      </div>
+    );
+  }
+
+  const ADMIN_MENU = [
+    { label: "Overview", path: "/admin", icon: <LayoutDashboard size={16} /> },
+    { label: "Manage Blogs", path: "/admin/blogs", icon: <FileText size={16} /> },
+    { label: "Manage Tools", path: "/admin/tools", icon: <Wrench size={16} /> },
+  ];
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#09090B] text-left text-slate-900 dark:text-slate-100 transition-colors duration-200">
+      
+      <Navbar />
+      
+      <div className="flex-grow w-full px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
         
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-gradient-to-b from-slate-950 to-black">
-          <div className="mx-auto max-w-5xl w-full">
-            {children}
+        <aside className="w-full md:w-56 shrink-0 flex flex-col gap-1.5 p-3.5 bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-neutral-800/80 rounded-2xl h-fit shadow-xs">
+          <p className="px-3 text-[10px] font-mono font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest mb-2">
+            Control Console
+          </p>
+
+          <div className="space-y-1">
+            {ADMIN_MENU.map((item) => {
+              const isActive = pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  className={`flex items-center gap-3 px-4 py-2.5 text-xs font-bold rounded-xl transition select-none ${
+                    isActive
+                      ? "bg-violet-600 text-white shadow-sm dark:bg-[#A6FF5D] dark:text-black"
+                      : "text-slate-600 dark:text-neutral-400 hover:bg-slate-50 dark:hover:bg-neutral-800/40"
+                  }`}
+                >
+                  {item.icon}
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
+        </aside>
+
+        <main className="flex-grow min-w-0 bg-white dark:bg-neutral-900 border border-slate-200/80 dark:border-neutral-800/80 rounded-2xl p-6 shadow-xs">
+          {children}
         </main>
       </div>
+
+      <footer className="w-full bg-white dark:bg-neutral-900 border-t border-slate-200/80 dark:border-neutral-800/80 py-4 mt-auto">
+        <div className="w-full px-4 sm:px-6 lg:px-8 text-center flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-medium text-slate-400 dark:text-neutral-500">
+          <p>© {new Date().getFullYear()} Toolverse Operations Network.</p>
+          <div className="flex gap-4 font-mono">
+            <span>v1.0.0</span>
+            <span className="text-green-500">Live</span>
+          </div>
+        </div>
+      </footer>
 
     </div>
   );
