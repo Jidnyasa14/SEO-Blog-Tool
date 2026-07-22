@@ -1,25 +1,7 @@
-import { ThemeProvider } from "next-themes";
-
-export default function RootLayout({
+export default function ToolsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-        >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+  return <>{children}</>;
 }
-
-

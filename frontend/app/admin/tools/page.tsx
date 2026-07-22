@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import { Wrench, Plus, Trash2, Edit3, ShieldAlert } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Wrench, Plus, Trash2, Edit3 } from "lucide-react";
 
 interface ToolSchema {
-  id: string;
+  id?: string;
+  _id?: string;
   name: string;
   slug: string;
   category: string;
@@ -13,15 +14,31 @@ interface ToolSchema {
   seoDescription: string;
 }
 
-const INITIAL_TOOLS: ToolSchema[] = [
-  { id: "1", name: "EMI Amortization Calculator", slug: "emi-calculator", category: "Finance", description: "Compute dynamic interest loan allocations.", seoTitle: "Free Premium Interactive EMI Calculator Utility", seoDescription: "Run monthly debt ratios flawlessly." },
-  { id: "2", name: "Secure String Password Generator", slug: "password-generator", category: "Utility", description: "Generate high entropy hash passes.", seoTitle: "Cryptographically Secure Entropy Key String Generator", seoDescription: "Calculate algorithmic string security limits." }
-];
-
 export default function AdminToolManagement() {
-  const [tools, setTools] = useState<ToolSchema[]>(INITIAL_TOOLS);
+  const [tools, setTools] = useState<ToolSchema[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [currentTool, setCurrentTool] = useState<Partial<ToolSchema> | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load tools from the database on mount
+  useEffect(() => {
+    async function fetchTools() {
+      try {
+        const response = await fetch("/api/tools");
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data)) setTools(data);
+        }
+      } catch (err) {
+        console.error("Failed loading tools:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchTools();
+  }, []);
+
+  const getId = (t: ToolSchema) => t._id || t.id || t.slug;
 
   const handleOpenCreate = () => {
     setCurrentTool({ name: "", slug: "", category: "Finance", description: "", seoTitle: "", seoDescription: "" });
@@ -33,27 +50,54 @@ export default function AdminToolManagement() {
     setIsFormOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm("Purge this active tool node?")) {
-      setTools(prev => prev.filter(t => t.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this tool?")) return;
+    try {
+      const response = await fetch(`/api/tools/${id}`, { method: "DELETE" });
+      if (response.ok) {
+        setTools(prev => prev.filter(t => getId(t) !== id));
+      } else {
+        alert("Failed to delete tool.");
+      }
+    } catch (err) {
+      console.error("Failed to delete tool:", err);
+      alert("A network error occurred while deleting.");
     }
   };
 
-  const handleSaveForm = (e: React.FormEvent) => {
+  const handleSaveForm = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!currentTool?.name) return;
+    if (!currentTool?.name || !currentTool?.slug) return;
 
-    if (currentTool.id) {
-      setTools(prev => prev.map(t => t.id === currentTool.id ? (currentTool as ToolSchema) : t));
-    } else {
-      const freshRecord: ToolSchema = {
-        ...(currentTool as Omit<ToolSchema, "id">),
-        id: Math.random().toString(36).substr(2, 9)
-      };
-      setTools(prev => [freshRecord, ...prev]);
+    const isEditingExisting = Boolean(currentTool.id || currentTool._id);
+
+    try {
+      const response = await fetch(
+        isEditingExisting ? `/api/tools/${getId(currentTool as ToolSchema)}` : "/api/tools",
+        {
+          method: isEditingExisting ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(currentTool),
+        }
+      );
+
+      const resData = await response.json();
+
+      if (response.ok && resData.success) {
+        if (isEditingExisting) {
+          setTools(prev => prev.map(t => (getId(t) === getId(currentTool as ToolSchema) ? resData.data : t)));
+        } else {
+          setTools(prev => [resData.data, ...prev]);
+        }
+        setIsFormOpen(false);
+        setCurrentTool(null);
+      } else {
+        alert(resData.message || "Failed to save tool.");
+      }
+    } catch (err) {
+      console.error("Failed to save tool:", err);
+      alert("A network error occurred while saving.");
     }
-    setIsFormOpen(false);
-    setCurrentTool(null);
   };
 
   return (
@@ -83,8 +127,14 @@ export default function AdminToolManagement() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-neutral-800/60">
+              {isLoading && (
+                <tr><td colSpan={3} className="px-4 py-4 text-center text-slate-400">Loading tools...</td></tr>
+              )}
+              {!isLoading && tools.length === 0 && (
+                <tr><td colSpan={3} className="px-4 py-4 text-center text-slate-400">No tools yet.</td></tr>
+              )}
               {tools.map((t) => (
-                <tr key={t.id} className="hover:bg-slate-50/50 dark:hover:bg-neutral-900/10 transition">
+                <tr key={getId(t)} className="hover:bg-slate-50/50 dark:hover:bg-neutral-900/10 transition">
                   <td className="px-4 py-3.5">
                     <p className="font-bold text-slate-900 dark:text-white">{t.name}</p>
                     <p className="font-mono text-[10px] text-slate-400">slug: {t.slug}</p>
@@ -92,7 +142,7 @@ export default function AdminToolManagement() {
                   <td className="px-4 py-3.5"><span className="px-2 py-0.5 bg-violet-50 dark:bg-neutral-900 text-violet-600 dark:text-[#A6FF5D] rounded font-medium">{t.category}</span></td>
                   <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">
                     <button onClick={() => handleOpenEdit(t)} className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:border-violet-500 dark:border-neutral-800 cursor-pointer transition"><Edit3 size={14} /></button>
-                    <button onClick={() => handleDelete(t.id)} className="p-1.5 rounded-lg border border-slate-200 text-red-500 hover:border-red-500 dark:border-neutral-800 cursor-pointer transition"><Trash2 size={14} /></button>
+                    <button onClick={() => handleDelete(getId(t)!)} className="p-1.5 rounded-lg border border-slate-200 text-red-500 hover:border-red-500 dark:border-neutral-800 cursor-pointer transition"><Trash2 size={14} /></button>
                   </td>
                 </tr>
               ))}
