@@ -12,10 +12,8 @@ import {
   ShieldAlert 
 } from "lucide-react";
 
-// ✅ IMPORT SORA FONT
 import { Sora } from "next/font/google";
 
-// ✅ LOAD FONT (but DON'T apply globally)
 const sora = Sora({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
@@ -27,14 +25,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
+  const isAdminLoginPage = pathname === "/admin/login";
+
   useEffect(() => {
+    // If we're on /admin/login, don't check localStorage
+    if (isAdminLoginPage) return;
+
     const isLoggedIn = localStorage.getItem("admin_logged_in") === "true";
     
-    setTimeout(() => {
+    // Defer the state update to avoid synchronous render cascades
+    const timer = setTimeout(() => {
       setIsAuthorized(isLoggedIn);
     }, 0);
-  }, []);
 
+    return () => clearTimeout(timer);
+  }, [pathname, isAdminLoginPage]);
+
+  // 1. DIRECT BYPASS: Render /admin/login immediately without checking auth
+  if (isAdminLoginPage) {
+    return <>{children}</>;
+  }
+
+  // 2. LOADING STATE
   if (isAuthorized === null) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-neutral-950 flex items-center justify-center text-slate-400">
@@ -43,6 +55,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
+  // 3. UNAUTHORIZED STATE
   if (isAuthorized === false) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-neutral-950 flex flex-col items-center justify-center p-6 text-center">
@@ -50,7 +63,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <ShieldAlert size={32} />
         </div>
 
-        {/* ✅ APPLY SORA ONLY HERE (example heading) */}
         <h1 className={`${sora.className} text-xl font-light text-slate-900 dark:text-white mb-2`}>
           Unauthorized Control Space
         </h1>
@@ -60,10 +72,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </p>
 
         <button
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/admin/login")}
           className="px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-semibold text-xs rounded-full transition shadow-sm cursor-pointer flex items-center gap-2"
         >
-          <ArrowLeft size={14} /> Go to Login Portal
+          <ArrowLeft size={14} /> Go to Admin Login Portal
         </button>
       </div>
     );

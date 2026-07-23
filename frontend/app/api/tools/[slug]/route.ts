@@ -2,10 +2,8 @@ export const dynamic = 'force-dynamic';
 
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/config/db';
-import { Tool } from '@/models/Tool'; // ✅ FIXED: was importing Blog before
+import { Tool } from '@/models/Tool';
 
-// Resolves the [slug] param as either a Mongo _id (used by the admin panel)
-// or a real slug (used by the public /tools/[slug] page).
 async function findTool(identifier: string) {
   const isObjectId = /^[0-9a-fA-F]{24}$/.test(identifier);
   if (isObjectId) {
@@ -34,7 +32,7 @@ export async function GET(
 
     return NextResponse.json(tool, { status: 200 });
   } catch (error: unknown) {
-    console.error("🔴 API TOOL SLUG FETCH EXCEPTION:", error);
+    console.error('🔴 API TOOL SLUG FETCH EXCEPTION:', error);
     const msg = error instanceof Error ? error.message : 'Unknown exception occurred';
     return NextResponse.json({ success: false, message: 'Failed to fetch tool node.', error: msg }, { status: 500 });
   }
@@ -67,7 +65,7 @@ export async function PUT(
 
     return NextResponse.json({ success: true, data: tool }, { status: 200 });
   } catch (error: unknown) {
-    console.error("🔴 API TOOL UPDATE EXCEPTION:", error);
+    console.error('🔴 API TOOL UPDATE EXCEPTION:', error);
     const msg = error instanceof Error ? error.message : 'Unknown exception occurred';
     return NextResponse.json({ success: false, message: 'Failed to update tool.', error: msg }, { status: 500 });
   }
@@ -90,7 +88,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: unknown) {
-    console.error("🔴 API TOOL DELETE EXCEPTION:", error);
+    console.error('🔴 API TOOL DELETE EXCEPTION:', error);
     const msg = error instanceof Error ? error.message : 'Unknown exception occurred';
     return NextResponse.json({ success: false, message: 'Failed to delete tool.', error: msg }, { status: 500 });
   }
