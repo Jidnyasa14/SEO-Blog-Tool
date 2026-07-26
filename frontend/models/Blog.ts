@@ -13,6 +13,11 @@ const BlogSchema = new Schema({
     lowercase: true,
     trim: true,
   },
+  summary: {
+    type: String,
+    trim: true,
+    default: '',
+  },
   content: {
     type: String,
     required: [true, 'Rich text content body payload cannot be empty.'],
@@ -27,6 +32,15 @@ const BlogSchema = new Schema({
   }],
   image: {
     type: String, 
+    default: '',
+  },
+  authorName: {
+    type: String,
+    default: 'Toolverse',
+  },
+  authorBio: {
+    type: String,
+    default: 'IT Services and Consulting company',
   },
   seoTitle: {
     type: String,
@@ -40,12 +54,12 @@ const BlogSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['draft', 'published'],
-    default: 'draft',
+    enum: ['draft', 'published', 'Draft', 'Published'],
+    default: 'published',
   },
   readingTime: {
     type: Number,
-    default: 0,
+    default: 5,
   },
 }, { 
   timestamps: true 

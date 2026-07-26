@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   try {
     await connectToDatabase();
     const body = await request.json();
-    const { name, slug, category, description, seoTitle, seoDescription } = body;
+    const { name, slug, category, description, componentKey, toolType, config, seoTitle, seoDescription } = body;
 
     const rawName = name || body.title;
     const rawSlug = slug || (rawName ? rawName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') : '');
@@ -48,8 +48,11 @@ export async function POST(request: Request) {
     const freshTool = await Tool.create({
       name: rawName,
       slug: cleanSlug,
-      category: category || 'General',
+      category: category || 'Utility',
       description: description || '',
+      componentKey: componentKey || '',
+      toolType: toolType || 'custom',
+      config: config || undefined,
       seoTitle: seoTitle || rawName,
       seoDescription: seoDescription || ''
     });

@@ -46,7 +46,7 @@ export async function PUT(
     await connectToDatabase();
     const { slug } = await params;
     const body = await request.json();
-    const { name, category, description, seoTitle, seoDescription } = body;
+    const { name, category, description, componentKey, toolType, config, seoTitle, seoDescription } = body;
     const newSlug = body.slug;
 
     const tool = await findTool(slug);
@@ -58,6 +58,9 @@ export async function PUT(
     if (newSlug !== undefined) tool.slug = newSlug.toLowerCase().trim();
     if (category !== undefined) tool.category = category;
     if (description !== undefined) tool.description = description;
+    if (componentKey !== undefined) tool.componentKey = componentKey;
+    if (toolType !== undefined) tool.toolType = toolType;
+    if (config !== undefined) tool.config = config;
     if (seoTitle !== undefined) tool.seoTitle = seoTitle;
     if (seoDescription !== undefined) tool.seoDescription = seoDescription;
 
