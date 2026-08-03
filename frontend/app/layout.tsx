@@ -67,7 +67,7 @@ export default function RootLayout({
       <head>
         {/* Google AdSense Script */}
         <Script
-          async
+          async-jewq 
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
           crossOrigin="anonymous"
           strategy="afterInteractive"
